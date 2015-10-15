@@ -39,9 +39,9 @@ class Map {
    * Method charged with extracting the distances between cities from the txt
    * file and loading them into a 2 dimensional array arrMap
    */
-  static function loadMap() {
+  static function loadMap($sMapName = './map_matrix/15_city_matrix.txt') {
     // Load the txt file as a string
-    $sString = file_get_contents('./map_matrix/15_city_matrix.txt');
+    $sString = file_get_contents($sMapName);
 
     // Add each line of distances between cities to array arrCities
     $arrCities = explode("\n", $sString);
@@ -60,11 +60,5 @@ class Map {
       // Save the distances from this city to other cities in our static array
       self::$arrMap[$nCityID] = $arrDistances[0];
     }
-  }
-
-  static function generateRandomRoute() {
-    $arrCityIDs = range(0, (count(self::$arrMap) - 1));
-    shuffle($arrCityIDs);
-    return $arrCityIDs;
   }
 }

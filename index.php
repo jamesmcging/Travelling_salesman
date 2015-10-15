@@ -1,25 +1,32 @@
 <?php
-require_once './map.php';
+require_once './Map.php';
+require_once './State.php';
+require_once './StateGenerator.php';
+require_once './Algorithm.php';
+require_once './Log.php';
 
-Map::loadMap();
+new TravellingSalesMan();
 
-//echo Map::getDistance(1,4);
+class TravellingSalesMan {
+  private $objStateGenerator = null;
+  private $objAlgorithm = null;
 
-//echo Map::getDistanceForRoute(array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,0));
+  public function __construct() {
+    // Load the map the salesman is going to travel
+    Map::loadMap('./map_matrix/15_city_matrix.txt');
 
-$nShortestRouteLength = 9999999999;
-$arrShortestRoute = array();
+    // Instantiate a route generator
+    $this->objStateGenerator = new MoveOneToFront();
 
-for ($i = 0; $i < 1000000; $i++) {
-  $arrRoute = Map::generateRandomRoute();
-  $nRouteLength = Map::getDistanceForRoute($arrRoute);
+    // Generate an algorithm class
+    $this->objAlgorithm = new HillClimbing($this->objStateGenerator);
 
-  if ($nRouteLength < $nShortestRouteLength) {
-   $nShortestRouteLength = $nRouteLength;
-   $arrShortestRoute = $arrRoute;
+    // Ask the algorithm to search for the shortest path
+    $this->objAlgorithm->findShortestPath();
+
+    // Output the log
+    echo "<pre>";
+    echo print_r(Log::getLog(), 1);
+    echo "</pre>";
   }
-
-//  echo "<p>Route " . implode(",", $arrRoute) . " is " . $nRouteLength . "units long.</p>";
 }
-
-echo "<p>Shortest route found is $nShortestRouteLength units long.</p>";
