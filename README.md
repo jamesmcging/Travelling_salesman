@@ -1,3 +1,2 @@
-# Travelling_salesman
-## Cork Institute of Technology 
-## Artificial Intelligence Assignment 1
+# Cork Institute of Technology 
+## Artificial Intelligence Assignment 1 - Travelling_salesman
