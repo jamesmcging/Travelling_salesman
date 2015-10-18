@@ -21,6 +21,10 @@ class Route extends State {
     return $this->getRoute();
   }
 
+  public function getRouteAsString() {
+    return implode(', ', $this->arrRoute);
+  }
+
   public function getRouteLength() {
     return parent::getStateValue();
   }

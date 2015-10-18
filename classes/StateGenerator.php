@@ -1,29 +1,38 @@
 <?php
 abstract class StateGenerator {
+  public $arrParameters = array();
+
   /**
    *
    * @param State $objCurrentState
    * @param type $arrParameters
    * @return array of State objects
    */
-  static function getChildStates(State $objCurrentState, $arrParameters) {
+  public function getChildStates(State $objCurrentState) {
     $arrChildStates = array();
     return $arrChildStates;
   }
 
-  static function generateRandomState() {}
+  public function generateRandomState() {}
 
+  public function setStateGeneratorParameters($arrParameters) {
+    $this->arrParameters = $arrParameters;
+  }
 }
 
 abstract class RouteGenerator extends StateGenerator {
-  static function getChildRoutes(\State $objCurrentRoute, $arrParameters) {
-    parent::getChildStates($objCurrentRoute, $arrParameters);
+  public function getChildRoutes(\State $objCurrentRoute) {
+    parent::getChildStates($objCurrentRoute);
   }
 
-  static function generateRandomRoute() {
+  public function generateRandomRoute() {
     $arrCityIDs = range(0, (count(Map::$arrMap) - 1));
     shuffle($arrCityIDs);
     return $arrCityIDs;
+  }
+
+  public function setRouteGeneratorParameters($arrParameters) {
+    parent::setStateGeneratorParameters($arrParameters);
   }
 
 }
@@ -34,12 +43,23 @@ abstract class RouteGenerator extends StateGenerator {
  * be done X times in order to generate X child states.
  */
 class MoveOneToFront extends RouteGenerator {
-  static function getChildRoutes(State $objCurrentState, $arrParameters) {
+
+  const DEFAULT_CHILD_STATES = 10;
+
+  public function __construct() {
+    $this->arrParameters = array('nDesiredChildStates' => self::DEFAULT_CHILD_STATES);
+  }
+
+  public function setParameters($arrParameters) {
+    parent::setRouteGeneratorParameters($arrParameters);
+  }
+
+  public function getChildRoutes(State $objCurrentState) {
     // Default return
     $arrChildStates = array();
 
     // The number of child states to generate
-    for($i = 0; $i < $arrParameters['nDesiredChildStates']; $i++) {
+    for($i = 0; $i < $this->arrParameters['nDesiredChildStates']; $i++) {
       // Reset to the original state
       $objDefaultState = clone $objCurrentState;
       // Get a random key in the route

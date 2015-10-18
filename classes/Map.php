@@ -3,6 +3,8 @@ class Map {
 
   static $arrMap = array();
 
+  static $sMapName = '';
+
   public function __construct() {
     self::loadMap();
   }
@@ -32,6 +34,10 @@ class Map {
       $nCityTo = $arrRoute[$i + 1];
       $nDistance += self::$arrMap[$nCityFrom][$nCityTo];
     }
+
+    // Remember to add the journey from the last city back to the first city
+    $nDistance += self::$arrMap[count($arrRoute) - 1][0];
+
     return $nDistance;
   }
 
@@ -39,17 +45,19 @@ class Map {
    * Method charged with extracting the distances between cities from the txt
    * file and loading them into a 2 dimensional array arrMap
    */
-  static function loadMap($sMapName = './map_matrix/15_city_matrix.txt') {
+  static function loadMap($sMapName = '15_city_matrix.txt') {
+    self::$sMapName = $sMapName;
+
     // Load the txt file as a string
-    $sString = file_get_contents($sMapName);
+    $sString = file_get_contents('./maps/'.$sMapName);
 
     // Add each line of distances between cities to array arrCities
     $arrCities = explode("\n", $sString);
 
-    echo "<pre>";
-    echo print_r($arrCities, 1);
-    echo "</pre>";
-    echo "<hr>";
+//    echo "<pre>";
+//    echo print_r($arrCities, 1);
+//    echo "</pre>";
+//    echo "<hr>";
 
     // Foreach line of distances from this city
     foreach ($arrCities as $nCityID => $sDistances) {
