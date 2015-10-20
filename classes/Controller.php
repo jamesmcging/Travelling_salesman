@@ -87,7 +87,7 @@ class Controller {
   private function setAlgorithm() {
     $bOutcome = false;
     if (isset($_REQUEST['sAlgorithmName']) && in_array($_REQUEST['sAlgorithmName'], self::$arrAvailableAlgorithms)) {
-      $bOutcome = $this->setAlgorithm($_REQUEST['sAlgorithmName']);
+      $bOutcome = $this->objProblem->setAlgorithm($_REQUEST['sAlgorithmName']);
     }
     return $bOutcome;
   }
@@ -95,13 +95,16 @@ class Controller {
   private function setStateGenerator() {
     $bOutcome = false;
     if (isset($_REQUEST['sStateGeneratorName']) && in_array($_REQUEST['sStateGeneratorName'], self::$arrAvailableStateGenerators)) {
-      $bOutcome = $this->setStateGenerator($_REQUEST['sStateGeneratorName']);
+      $bOutcome = $this->objProblem->setStateGenerator($_REQUEST['sStateGeneratorName']);
     }
     return $bOutcome;
   }
 
   private function getSolution() {
     $nRunCount = (int)$_REQUEST['runCount'];
+    $this->setAlgorithm();
+    $this->setStateGenerator();
+    $this->setMap();
     $arrResponse['arrRunData'] = $this->objProblem->findShortestRoute($nRunCount);
     return $arrResponse;
   }
@@ -119,14 +122,14 @@ class Controller {
     <title>Heuristic Search</title>
 
     <!-- jQuery -->
-    <script src="./assets/js/jquery-2.1.4.js"></script>
+    <script src="assets/js/jquery-2.1.4.js"></script>
 
     <!-- Bootstrap CSS and JS -->
     <link rel="stylesheet" href="./assets/css/bootstrap.css">
-    <script src="./assets/js/bootstrap.js"></script>
+    <script src="assets/js/bootstrap.js"></script>
 
     <!-- js that generates and handles the interface -->
-    <script language="javascript" src="/Travelling_salesman/assets/js/view.js"></script>
+    <script language="javascript" src="assets/js/view.js"></script>
 
     <!-- Pass some data to the front end js -->
     <script language="javascript">

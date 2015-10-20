@@ -3,7 +3,7 @@ TravellingSalesMan = {
   arrAlgorithms : [],
   arrStateGenerators : [],
 
-  sURL : '/travelling_salesman/index.php',
+  sURL : '/index.php',
 
   initialize : function(jsonInterfaceConfiguration) {
     this.arrMaps = jsonInterfaceConfiguration.maps;
@@ -141,7 +141,10 @@ TravellingSalesMan = {
           url  : TravellingSalesMan.sURL,
           data : {
             action:'getSolution',
-            runCount:$('#run_count').val()
+            runCount:$('#run_count').val(),
+            sMapName:$('#use_map').val(),
+            sAlgorithmName :$('#use_algorithm').val(),
+            sStateGeneratorName :$('#use_stategenerator').val()
           }
         }).done(function(data){
           data = $.parseJSON(data);

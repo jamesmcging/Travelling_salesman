@@ -24,9 +24,10 @@ class Map {
    * identified by passing in an array of city IDs
    *
    * @param array $arrRoute array of nCityIDs
-   * @return int
+   * @param type $bCloseRoute add the distance from the last city back to the first
+   * @return type
    */
-  static function getDistanceForRoute(array $arrRoute) {
+  static function getDistanceForRoute(array $arrRoute, $bCloseRoute = true) {
     $nDistance = 0;
 
     for ($i = 0; $i < (count($arrRoute) - 1); $i++) {
@@ -36,8 +37,10 @@ class Map {
     }
 
     // Remember to add the journey from the last city back to the first city
-    $nDistance += self::$arrMap[count($arrRoute) - 1][0];
-
+    if ($bCloseRoute) {
+      $nDistance += self::$arrMap[count($arrRoute) - 1][0];
+    }
+    
     return $nDistance;
   }
 

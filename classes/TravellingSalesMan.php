@@ -28,7 +28,11 @@ class TravellingSalesMan {
   }
 
   public function findShortestRoute($nRunCount) {
-    $arrRunData = array();
+    $arrRunData = array('fixed_data'=>array(
+        'map' => $this->sMapName,
+        'stategenerator' => get_class($this->objStateGenerator),
+        'algorithm' => get_class($this->objAlgorithm)
+    ));
     for ($i = 0; $i < $nRunCount; $i++) {
       $arrRunData[] = $this->objAlgorithm->findShortestRoute();
     }
